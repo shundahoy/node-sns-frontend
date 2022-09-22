@@ -5,6 +5,7 @@ import TimeLine from "../../components/timeline/TimeLine";
 import Topbar from "../../components/topbar/Topbar";
 import "./Profile.css";
 const Profile = () => {
+  const PUBLIC_FOLDER = process.env.REACT_APP_PUBLIC_FOLDER;
   return (
     <>
       <Topbar />
@@ -14,7 +15,7 @@ const Profile = () => {
           <div className="profileRightTop">
             <div className="profileCover">
               <img
-                src="/assets/post/3.jpeg"
+                src={PUBLIC_FOLDER + "/post/3.jpeg"}
                 alt=""
                 className="profileCoverImg"
               />
@@ -32,7 +33,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="profileRightBottom">
-            <TimeLine />
+            <TimeLine username="user3" />
             <Rightbar profile />
           </div>
         </div>

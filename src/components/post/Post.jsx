@@ -1,29 +1,35 @@
 import { MoreVert } from "@mui/icons-material";
 import React, { useState } from "react";
-import { Users } from "../../dummyData";
 import "./Post.css";
-const Post = (props) => {
-  const { id, desc, photo, date, userId, like, comment } = props.post;
+import { useEffect } from "react";
+import axios from "axios";
 
-  const [likes, setLikes] = useState(like);
-  const [isLiked, setIsLiked] = useState(false);
+const Post = (props) => {
+  const { id, desc, photo, date, userId, likes, comment } = props.post;
+
+  const [user, setUser] = useState({});
+
+  console.log(likes);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await axios.get(`/users/${userId}`);
+
+      setUser(response.data);
+    };
+    fetchUser();
+  }, []);
+
   const handleLike = () => {
-    setLikes(isLiked ? likes - 1 : likes + 1);
-    setIsLiked(!isLiked);
+    // setLikes(isLiked ? likes - 1 : likes + 1);
+    // setIsLiked(!isLiked);
   };
   return (
     <div className="post">
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopleft">
-            <img
-              src={Users.filter((user) => user.id === id)[0].profilePicture}
-              alt=""
-              className="postProfileImg"
-            />
-            <span className="postUsername">
-              {Users.filter((user) => user.id === id)[0].username}
-            </span>
+            <img src={user.img} alt="" className="postProfileImg" />
+            <span className="postUsername">{user.username}</span>
             <span className="postDate">{date}</span>
           </div>
           <div className="postTopRight">
@@ -43,7 +49,9 @@ const Post = (props) => {
               className="likeIcon"
               onClick={() => handleLike()}
             />
-            <span className="postLikeCounter">{likes}人がいいねしました</span>
+            <span className="postLikeCounter">
+              {likes.length}人がいいねしました
+            </span>
           </div>
           <div className="postBottomRight">
             <span className="postCommentText">{comment}のコメント</span>
